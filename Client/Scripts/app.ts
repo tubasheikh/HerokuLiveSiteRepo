@@ -175,7 +175,8 @@
     {
         console.log("Contact-List Page");
 
-        if(localStorage.length > 0) // check if localStorage has something in it 
+        
+        /* if(localStorage.length > 0) // check if localStorage has something in it 
         {
             let contactList = document.getElementById("contactList") as HTMLElement;
 
@@ -209,21 +210,23 @@
             contactList.innerHTML = data;
 
             
-            $("button.delete").on("click", function()
-            {
-                if(confirm("Are you sure?"))
-                {
-                    localStorage.removeItem($(this).val() as string);
-                }
-                
-                location.href = "/contact-list";
-            });
+            
 
             $("button.edit").on("click", function() 
             {
                 location.href = "/edit#" + $(this).val() as string;
             });
-        }
+        } */
+
+        $("a.delete").on("click", function(event)
+            {
+                if(!confirm("Are you sure?"))
+                {
+                    event.preventDefault();
+                    // refresh after deleting
+                    location.href = "/contact-list";   
+                }
+            });
 
         $("#addButton").on("click", () =>
             {
@@ -237,75 +240,7 @@
         console.log("Edit Page");
 
         ContactFormValidation();
-
-        let page = location.hash.substring(1);
-
-        switch(page)
-        {
-            case "add":
-                {
-                    $("main>h1").text("Add Contact");
-
-                    $("#editButton").html(`<i class="fas fa-plus-circle fa-lg"></i> Add`);
-
-                    $("#editButton").on("click", (event) => 
-                    {
-                        event.preventDefault();
-
-                        let fullName = document.forms[0].fullName.value as string;
-                        let contactNumber = document.forms[0].contactNumber.value as string;
-                        let emailAddress = document.forms[0].emailAddress.value as string;
-
-                        // Add Contact
-                        AddContact(fullName, contactNumber, emailAddress);
-
-                        // Refresh the contact-list page
-                        location.href = "/contact-list";
-                    });
-
-                    $("#cancelButton").on("click", () =>
-                    {
-                        location.href = "/contact-list";
-                    });
-
-                }
-                break;
-            default:
-                {
-                    // get the contact info from localStorage
-                    let contact = new core.Contact();
-                    contact.deserialize(localStorage.getItem(page) as string);
-
-                    // display the contact info in the edit form
-                    $("#fullName").val(contact.FullName);
-                    $("#contactNumber").val(contact.ContactNumber);
-                    $("#emailAddress").val(contact.EmailAddress);
-
-                    // when Edit is pressed - update the contact
-                    $("#editButton").on("click", (event)=>
-                    {
-                        event.preventDefault();
-
-                        // get any changes from the form
-                        contact.FullName = $("#fullName").val() as string;
-                        contact.ContactNumber = $("#contactNumber").val() as string;
-                        contact.EmailAddress = $("#emailAddress").val() as string;
-
-                        // replace the item in localStorage
-                        localStorage.setItem(page, contact.serialize() as string);
-
-                        //  to the contact-list
-                        location.href = "/contact-list";
-                    });
-
-                    $("#cancelButton").on("click", () =>
-                    {
-                        location.href = "/contact-list";
-                    });
-                    
-                }
-                break;
-        }
+        
     }
 
     function CheckLogin(): void
@@ -438,11 +373,12 @@
                 DisplayContactPage();
                 break;
             case "contact-list":  
-                AuthGuard();
                 DisplayContactListPage();
                 break;
             case "edit":  
-                AuthGuard();
+                DisplayEditPage();
+                break;
+            case "add":  
                 DisplayEditPage();
                 break;
             case "login":  
