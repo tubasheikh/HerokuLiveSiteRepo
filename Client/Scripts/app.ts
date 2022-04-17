@@ -175,49 +175,6 @@
     {
         console.log("Contact-List Page");
 
-        
-        /* if(localStorage.length > 0) // check if localStorage has something in it 
-        {
-            let contactList = document.getElementById("contactList") as HTMLElement;
-
-            let data = "";
-
-            let keys = Object.keys(localStorage);
-
-            let index = 1;
-
-            //for every key in the keys collection loop
-            for(const key of keys)
-            {
-                let contactData = localStorage.getItem(key) as string; // retrieve contact data from localStorage
-
-                let contact = new core.Contact(); // create an empty Contact Object
-                contact.deserialize(contactData);
-
-                data += `<tr>
-                <th scope="row" class="text-center">${index}</th>
-                <td>${contact.FullName}</td>
-                <td>${contact.ContactNumber}</td>
-                <td>${contact.EmailAddress}</td>
-                <td class="text-center"><button value="${key}" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i> Edit</button></td>
-                <td class="text-center"><button value="${key}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i> Delete</button></td>
-                </tr>
-                `;
-                
-                index++;
-            }
-
-            contactList.innerHTML = data;
-
-            
-            
-
-            $("button.edit").on("click", function() 
-            {
-                location.href = "/edit#" + $(this).val() as string;
-            });
-        } */
-
         $("a.delete").on("click", function(event)
             {
                 if(!confirm("Are you sure?"))
